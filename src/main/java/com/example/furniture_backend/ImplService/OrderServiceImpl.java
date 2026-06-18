@@ -66,10 +66,14 @@ public class OrderServiceImpl implements OrderService {
 	    List<OrderItem> orderItems = new ArrayList<>();
 
 	    for (OrderItemRequestDto itemDto : dto.getItems()) {
+	    	
+	    	System.out.println("PRODUCT ID: " + itemDto.getProductId());
 
-	        Product product = productRepository.findById(itemDto.getProductId())
-	                .orElseThrow(() ->
-	                        new ResourceNotFoundException("Product not found"));
+	    	 Product product = productRepository.findById(itemDto.getProductId())
+	    	            .orElseThrow(() ->
+	    	                    new RuntimeException("❌ Product not found with ID: " + itemDto.getProductId()));
+
+	    	    System.out.println("FOUND PRODUCT: " + product.getTitle());
 
 	        OrderItem orderItem = new OrderItem();
 
