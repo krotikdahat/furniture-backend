@@ -27,25 +27,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    	http
-        .csrf(csrf -> csrf.disable())
-        .cors(cors -> {})
-        .authorizeHttpRequests(auth -> auth
-
-            .requestMatchers(
-                    "/api/users/register",
-                    "/api/users/login"
-            ).permitAll()
-
-            .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**")
-            .permitAll()
-
-            .anyRequest().authenticated()
-        )
-        .addFilterBefore(
-                jwtAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class
-        );
+    	 http
+         .csrf(csrf -> csrf.disable())
+         .authorizeHttpRequests(auth -> auth
+             .anyRequest().permitAll()
+         );
 
         return http.build();
     }
