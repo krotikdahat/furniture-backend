@@ -41,7 +41,7 @@ public class Product {
 
 	private LocalDateTime createdAt;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "product")
-	private List<OrderItem> orderItems;
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "product")
+//	private List<OrderItem> orderItems;
 }
