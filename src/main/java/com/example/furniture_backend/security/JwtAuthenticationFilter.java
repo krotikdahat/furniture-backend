@@ -61,9 +61,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     	String jwt = authHeader.substring(7);
 
-    	if (jwt == null || jwt.trim().isEmpty()) {
+    	if (jwt.isBlank() || jwt.equals("null")) {
     	    filterChain.doFilter(request, response);
     	    return;
+    	}
+
+    	try {
+    	    String username = jwtService.extractUsername(jwt);
+
+    	    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+    	        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+    	        if (jwtService.isTokenValid(jwt, userDetails)) {
+    	            UsernamePasswordAuthenticationToken authToken =
+    	                new UsernamePasswordAuthenticationToken(
+    	                    userDetails,
+    	                    null,
+    	                    userDetails.getAuthorities()
+    	                );
+
+    	            SecurityContextHolder.getContext().setAuthentication(authToken);
+    	        }
+    	    }
+
+    	} catch (Exception e) {
+    	    System.out.println("JWT ERROR IGNORED: " + e.getMessage());
     	}
 
         filterChain.doFilter(request, response);
