@@ -30,20 +30,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+            .cors(cors -> {})
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            .authorizeHttpRequests(auth -> auth
-                // 🔥 TEMP: allow everything (fix 403)
-                .anyRequest().permitAll()
+            .authorizeHttpRequests(auth ->
+                auth.anyRequest().permitAll()
             )
-            // 🔥 IMPORTANT: keep filter but it won't block requests now
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
+            );
 
         return http.build();
     }
-
+    
+    
+    
     // Authentication provider (needed for login system)
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
