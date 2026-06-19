@@ -49,6 +49,10 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public OrderResponseDto placeOrder(OrderRequestDto dto) {
+		
+		 System.out.println("===== PLACE ORDER CALLED =====");
+		    System.out.println("UserId = " + dto.getUserId());
+		    System.out.println("Items = " + dto.getItems());
 
 	    // FETCH USER
 	    User user = userRepository.findById(dto.getUserId())
@@ -74,6 +78,10 @@ public class OrderServiceImpl implements OrderService {
 	    	                    new RuntimeException("❌ Product not found with ID: " + itemDto.getProductId()));
 
 	    	    System.out.println("FOUND PRODUCT: " + product.getTitle());
+	    	    
+	    	    System.out.println("ITEM RECEIVED: " + itemDto.getProductId());
+	    	    
+	    	    System.out.println("PRODUCT EXISTS CHECK: " + productRepository.existsById(itemDto.getProductId()));
 
 	        OrderItem orderItem = new OrderItem();
 
